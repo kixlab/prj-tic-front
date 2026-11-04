@@ -5,6 +5,7 @@ import Sidebar from './components/layout/Sidebar';
 import Footer from './components/common/Footer';
 import DashboardView from './pages/DashboardPage';
 import CaseListView from './pages/CaseListPage';
+import PatientDashboardPage from './pages/PatientDashboardPage';
 import Phase1InitialPage from './pages/Phase1InitialPage';
 import Phase2ReviewPage from './pages/Phase2ReviewPage';
 import Phase3FinalPage from './pages/Phase3FinalPage';
@@ -29,15 +30,11 @@ export default function App() {
             <Routes>
               <Route path="/" element={<DashboardView />} />
               <Route path="/cases" element={<CaseListView />} />
+              <Route path="/cases/:caseId" element={<PatientDashboardPage />} />
               <Route path="/cases/:caseId/phase1" element={<Phase1InitialPage />} />
               <Route path="/cases/:caseId/phase2" element={<Phase2ReviewPage />} />
               <Route path="/cases/:caseId/phase3" element={<Phase3FinalPage />} />
               <Route path="/cases/:caseId/compare" element={<VideoComparePage />} />
-
-              {/* Redirect to correct phase based on case state would be better,
-                  but for now simple direct navigation or default to phase1 */}
-              <Route path="/cases/:caseId" element={<Navigate to="phase1" replace />} />
-
               <Route path="/settings" element={<SettingsPage />} />
             </Routes>
           </main>

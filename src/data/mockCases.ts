@@ -1,12 +1,44 @@
-import { TicCase, DashboardMetrics } from '../types/cdss';
+import { TicCase, DashboardMetrics, ScheduleEvent } from '../types/cdss';
 
 export const INITIAL_METRICS: DashboardMetrics = {
-  totalReviewProgress: 80,
-  completedCasesCount: 3,
-  remainingVideoCount: 8,
-  totalVideoCount: 10,
+  totalReviewProgress: 30, // 계산 로직으로 대체될 예정이지만 초기값
+  completedCasesCount: 1,
+  remainingVideoCount: 2,
+  totalVideoCount: 3,
   thisWeekPatients: 1,
 };
+
+export const INITIAL_SCHEDULES: ScheduleEvent[] = [
+  {
+    id: 'S-1',
+    patientId: 'P-1002',
+    patientName: '이*민',
+    caseId: 'C-77821',
+    date: '2026-10-21',
+    time: '10:00',
+    visitType: '재진',
+    notes: '코 끝 실룩거림 증상 심화 여부 확인 필요'
+  },
+  {
+    id: 'S-2',
+    patientId: 'P-1015',
+    patientName: '김*현',
+    date: '2026-10-21',
+    time: '14:30',
+    visitType: '초진',
+    notes: '눈 깜빡임 및 어깨 들썩임으로 내원'
+  },
+  {
+    id: 'S-3',
+    patientId: 'P-1005',
+    patientName: '박*우',
+    caseId: 'C-77822',
+    date: '2026-10-22',
+    time: '09:00',
+    visitType: '정기 검진',
+    notes: '약물 복용 후 경과 관찰'
+  }
+];
 
 export const INITIAL_CASES: TicCase[] = [
   {
@@ -14,10 +46,12 @@ export const INITIAL_CASES: TicCase[] = [
     patientId: 'P-1002',
     patientName: '이*민',
     visitDate: '2026.10.01',
+    priorVisitDate: '2026.08.15',
     symptomSummary: '반복적인 얼굴 경련 증상',
     symptomDetail: '코 끝을 미세하게 움직임',
     status: 'in_review',
     currentPhase: 1,
+    updatedAt: '2026.10.20 16:45',
     currentVideo: {
       title: '2026.10.01 환자 촬영 영상',
       duration: 300,
@@ -63,6 +97,7 @@ export const INITIAL_CASES: TicCase[] = [
       ]
     },
     priorVideo: {
+      id: 'PV-1',
       visitDate: '2026.08.15',
       title: '2026.08.15 이전 방문 영상',
       duration: 240,
@@ -93,8 +128,9 @@ export const INITIAL_CASES: TicCase[] = [
         }
       ]
     },
-    // 기본 임상의 초기 판단 예시 (초기 진입 시 사용자가 편집 가능하도록 제공하거나 비워둠)
     initialAssessment: {
+      primaryClassification: '틱',
+      secondaryClassification: '행동 틱',
       classification: '행동 틱',
       confidence: '중간',
       evidence: '반복적인 움직임',
@@ -157,10 +193,12 @@ export const INITIAL_CASES: TicCase[] = [
     patientId: 'P-1005',
     patientName: '박*우',
     visitDate: '2026.09.28',
+    priorVisitDate: '2026.07.10',
     symptomSummary: '간헐적인 헛기침 및 음성 증상',
     symptomDetail: '말하는 도중 헛기침을 반복함',
     status: 'completed',
     currentPhase: 3,
+    updatedAt: '2026.09.28 11:45',
     currentVideo: {
       title: '2026.09.28 환자 촬영 영상',
       duration: 180,
@@ -176,6 +214,8 @@ export const INITIAL_CASES: TicCase[] = [
       ]
     },
     initialAssessment: {
+      primaryClassification: '틱',
+      secondaryClassification: '음성 틱',
       classification: '음성 틱',
       confidence: '높음',
       evidence: '반복적인 헛기침 소리 확인',
@@ -194,6 +234,8 @@ export const INITIAL_CASES: TicCase[] = [
       decidedAt: '2026-09-28 11:40'
     },
     finalDecision: {
+      primaryClassification: '틱',
+      secondaryClassification: '음성 틱',
       classification: '음성 틱',
       confidence: '높음',
       evidence: '반복적인 헛기침 소리 및 음향 스펙트로그램 일치',
@@ -210,15 +252,18 @@ export const INITIAL_CASES: TicCase[] = [
     symptomDetail: '우측 어깨를 주기적으로 치켜올림',
     status: 'pending',
     currentPhase: 1,
+    updatedAt: '2026.09.15 10:00',
     currentVideo: {
       title: '2026.09.15 환자 촬영 영상',
-      duration: 210,
+      duration: 106,
+      videoUrl: 'https://youtu.be/m48z9IM8bos',
+      youtubeId: 'm48z9IM8bos',
       ticPoints: [
         {
           id: 'tp-23-1',
-          timeStr: '2:10',
-          seconds: 130,
-          label: 'TIC Point 2:10',
+          timeStr: '0:02',
+          seconds: 2,
+          label: 'TIC Point 0:02',
           evidence: ['어깨 거상 움직임', '동시적 머리 신전'],
           detectionBox: { label: 'face 95%', x: 30, y: 22, width: 40, height: 44 }
         }
@@ -229,7 +274,16 @@ export const INITIAL_CASES: TicCase[] = [
       confidencePercent: 78,
       faceDetectionPercent: 96,
       summaryEvidence: ['어깨 및 경추 연동 움직임'],
-      ticPoints: []
+      ticPoints: [
+        {
+          id: 'tp-23-1-ai',
+          timeStr: '0:02',
+          seconds: 2,
+          label: 'TIC Point 0:02',
+          evidence: ['어깨 거상 움직임', '동시적 머리 신전'],
+          detectionBox: { label: 'face 95%', x: 30, y: 22, width: 40, height: 44 }
+        }
+      ]
     }
   }
 ];
