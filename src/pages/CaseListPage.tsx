@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useCaseContext } from '../context/CaseContext';
 import { Search, Filter, Plus, Calendar, ChevronRight, MoreVertical } from 'lucide-react';
 import { TicCase } from '../types/cdss';
@@ -7,6 +7,9 @@ import { TicCase } from '../types/cdss';
 const CaseListView: React.FC = () => {
   const { cases, addCase } = useCaseContext();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isInterviewMode = location.pathname.startsWith('/interview');
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<'all' | 'pending' | 'in_review' | 'completed'>('all');
@@ -115,10 +118,10 @@ const CaseListView: React.FC = () => {
                 </td>
                 <td className="px-6 py-4 text-right">
                   <Link
-                    to={`/cases/${c.id}`}
+                    to={isInterviewMode ? `/interview/cases/${c.id}/mode` : `/cases/${c.id}`}
                     className="inline-flex items-center space-x-1 text-xs font-bold text-[#5EBB8F] hover:underline"
                   >
-                    <span>상세 보기</span>
+                    <span>{isInterviewMode ? '워크플로우 선택' : '상세 보기'}</span>
                     <ChevronRight size={14} />
                   </Link>
                 </td>

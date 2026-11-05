@@ -40,7 +40,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     if (!youtubeId) return;
 
     let isMounted = true;
-    let timer: number;
+    let timer: number | undefined = undefined;
 
     const initPlayer = () => {
       if (!isMounted || !window.YT || !window.YT.Player) return;
