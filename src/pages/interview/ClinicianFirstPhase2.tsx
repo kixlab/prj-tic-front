@@ -129,7 +129,7 @@ const ClinicianFirstPhase2: React.FC = () => {
                 <Bot size={16} className="mr-2 text-[#5EBB8F]" />
                 환자 영상 및 AI 탐지 포인트
               </h3>
-              <span className="text-[10px] font-bold bg-[#E0EFE8] text-[#2E664B] px-2.5 py-1 rounded-full">
+              <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-red-100 text-red-700">
                 AI 신뢰도 {aiPrediction.confidencePercent}%
               </span>
             </div>
@@ -139,13 +139,19 @@ const ClinicianFirstPhase2: React.FC = () => {
             />
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border-2 border-[#5EBB8F] shadow-sm relative overflow-hidden">
+          <div className="bg-white p-6 rounded-2xl border-2 border-red-300 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 right-0 bg-[#5EBB8F] text-white text-[10px] font-bold px-4 py-1 rounded-bl-xl">
               AI 분석 결과
             </div>
             <div className="flex items-center space-x-2 mb-4">
               <Bot size={18} className="text-[#5EBB8F]" />
               <h3 className="text-sm font-bold text-[#192835]">B. AI 분석 및 근거 확인</h3>
+            </div>
+
+            <div className="bg-red-50 border border-red-300 rounded-xl p-3 mb-4">
+              <p className="text-[11px] leading-relaxed text-red-700">
+                🚨 [경고] AI 분석 신뢰도가 40%로 낮습니다. 영상 직접 검토 및 임상의의 독자적 판단이 필수적입니다.
+              </p>
             </div>
 
             <div className="space-y-4 text-xs">
